@@ -13,31 +13,31 @@ class anggota extends Seeder
     {
         \App\Anggota_model::insert([
         [
-            'nama_anggota'=>'abel',
+            'nama_anggota'=>'Fynas',
             'alamat'=>'jl jalan',
             'telp'=>'0812345678',
             'created_at'=> \Carbon\Carbon::now('Asia/Jakarta')
         ],
         [
-            'nama_anggota'=>'athallah',
+            'nama_anggota'=>'Putra',
             'alamat'=>'jl jalan',
             'telp'=>'0812345678',
             'created_at'=> \Carbon\Carbon::now('Asia/Jakarta')
         ],
         [
-            'nama_anggota'=>'wiyangga',
+            'nama_anggota'=>'Ansi',
             'alamat'=>'jl jalan',
             'telp'=>'0812345678',
             'created_at'=> \Carbon\Carbon::now('Asia/Jakarta')
         ],
         [
-            'nama_anggota'=>'atha',
+            'nama_anggota'=>'Malfynas',
             'alamat'=>'jl jalan',
             'telp'=>'0812345678',
             'created_at'=> \Carbon\Carbon::now('Asia/Jakarta')
         ],
         [
-            'nama_anggota'=>'abelino',
+            'nama_anggota'=>'Malfy',
             'alamat'=>'jl jalan',
             'telp'=>'0812345678',
             'created_at'=> \Carbon\Carbon::now('Asia/Jakarta')

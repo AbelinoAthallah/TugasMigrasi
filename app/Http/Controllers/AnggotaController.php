@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Petugas_model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Anggota_model;
+use Auth;
 
-
-class UserController extends Controller
+class AnggotaController extends Controller
 {
     public function login(Request $request)
     {
@@ -31,20 +30,20 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_petugas' => 'required|string|max:255',
+            'nama_anggota' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
             'telp' => 'required|string|max:11',
             'username' => 'required|string|max:55',
             'password' => 'required|string|min:6|confirmed',
-            'level' => 'required|string|max:256',
+            'level' => 'required|string|max:255',
         ]);
 
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $user = User::create([
-            'nama_petugas' => $request->get('nama_petugas'),
+        $user = Anggota_model::create([
+            'nama_anggota' => $request->get('nama_anggota'),
             'alamat' => $request->get('alamat'),
             'telp' => $request->get('telp'),
             'username' => $request->get('username'),
@@ -54,8 +53,8 @@ class UserController extends Controller
 
         $token = JWTAuth::fromUser($user);
 
-        $update = User::where('nama_petugas', $request->nama_petugas)->update([
-            'nama_petugas' => $request->get('nama_petugas'),
+        $update = Anggota_model::where('nama_aggota', $request->nama_anggota)->update([
+            'nama_aggota' => $request->get('nama_aggota'),
             'alamat' => $request->get('alamat'),
             'telp' => $request->get('telp'),
             'username' => $request->get('username'),
@@ -91,10 +90,11 @@ class UserController extends Controller
         return response()->json(compact('user'));
     }
 
+    
     public function store(Request $request)
     {
         $validator=Validator::make($request->all(),[
-            'nama_petugas'=>'required',
+            'nama_anggota'=>'required',
             'alamat'=>'required',
             'telp'=>'required',
             'username'=>'required',
@@ -105,8 +105,8 @@ class UserController extends Controller
             return response()->json($validator->errors()->toJson(),
             400);
         }else{
-            $insert=Petugas_model::insert([
-                'nama_petugas'=>$request->nama_petugas,
+            $insert=Anggota_model::insert([
+                'nama_anggota'=>$request->nama_anggota,
                 'alamat'=>$request->alamat,
                 'telp'=>$request->telp,
                 'username'=>$request->username,
@@ -114,9 +114,9 @@ class UserController extends Controller
                 'level'=>$request->level
             ]);
             if($insert){
-                $status="sukses";
+                $status="Sukses menambahkan data!";
             }else{
-                $status="gagal";
+                $status="Gagal menambahkan data!";
             }
             return response()->json(compact('status'));
         }
@@ -126,7 +126,7 @@ class UserController extends Controller
     {
         $validator=Validator::make($req->all(),
         [
-            'nama_petugas'=>'required',
+            'nama_anggota'=>'required',
             'alamat'=>'required',
             'telp'=>'required',
             'username'=>'required',
@@ -137,8 +137,8 @@ class UserController extends Controller
         if($validator->fails()){
             return Response()->json($validator->errors());
         }
-        $ubah=Petugas_model::where('id', $id)->update([
-            'nama_petugas'=>$req->nama_petugas,
+        $ubah=Anggota_model::where('id', $id)->update([
+            'nama_anggota'=>$req->nama_anggota,
             'alamat'=>$req->alamat,
             'telp'=>$req->telp,
             'username'=>$req->username,
@@ -153,7 +153,7 @@ class UserController extends Controller
     }
     public function destroy($id)
     {
-        $hapus=Petugas_model::where('id',$id)->delete();
+        $hapus=Anggota_model::where('id',$id)->delete();
         if($hapus){
             return Response()->json(['status'=>'Data berhasil dihapus!']);
         }else{
@@ -161,10 +161,14 @@ class UserController extends Controller
         }
     }
 
-    public function tampil_petugas()
-    {
-        $data_petugas=Petugas_model::get();
-        return Response()->json($data_petugas);
-    }
 
+    public function tampil_anggota()
+    {
+        if(Auth::User()->level=="admin"){
+            $dt_anggota=Anggota_model::get();
+            return response()->json($dt_anggota);
+        }else{
+            return response()->json(['status'=>'anda bukan admin']);
+        }
+    }
 }

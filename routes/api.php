@@ -20,7 +20,28 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
 
+Route::post('register_anggota', 'AnggotaController@register');
+Route::post('login', 'AnggotaController@login');
+
 Route::get('/',function(){
     return Auth::user()->level;
 })->middleware('jwt.verify');
+
+/////////////////////////////////////PETUGAS
+Route::post('/simpan_petugas', 'UserController@store')->middleware('jwt.verify');
+Route::put('/ubah_petugas/{id}','UserController@update')->middleware('jwt.verify');
+Route::delete('/hapus_petugas/{id}','UserController@destroy')->middleware('jwt.verify');
+Route::get('/tampil_petugas','UserController@tampil_petugas')->middleware('jwt.verify');
+
+/////////////////////////////////////BUKU
+Route::post('/simpan_buku', 'BukuController@store')->middleware('jwt.verify');
+Route::put('/ubah_buku/{id}','BukuController@update')->middleware('jwt.verify');
+Route::delete('/hapus_buku/{id}','BukuController@destroy')->middleware('jwt.verify');
+Route::get('/tampil_buku','BukuController@tampil_buku')->middleware('jwt.verify');
+
+/////////////////////////////////////ANGGOTA
+Route::post('/simpan_anggota', 'AnggotaController@store')->middleware('jwt.verify');
+Route::put('/ubah_anggota/{id}','AnggotaController@update')->middleware('jwt.verify');
+Route::delete('/hapus_anggota/{id}','AnggotaController@destroy')->middleware('jwt.verify');
+Route::get('/tampil_anggota','AnggotaController@tampil_anggota')->middleware('jwt.verify');
 
